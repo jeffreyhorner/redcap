@@ -286,7 +286,7 @@ function(rcon,factors=TRUE,fields=NULL,forms=NULL,records=NULL,events=NULL,raw=F
       if (is.character(fields) && 
           length(which(meta_data$field_name %in% fields)) == length(fields))
       {
-         field_names <- unique(c('study_id',fields))
+         field_names <- unique(fields)
          .params[['fields']] = paste(fields,collapse=',')
       }
       else
@@ -294,6 +294,11 @@ function(rcon,factors=TRUE,fields=NULL,forms=NULL,records=NULL,events=NULL,raw=F
    }
    else
       field_names <- meta_data$field_name
+
+   if (!is.null(events))
+   {
+      .params[['events']] = paste(events,collapse=',')
+   }
 
 
    x <- postForm(uri=rcon$url,.params=.params,
