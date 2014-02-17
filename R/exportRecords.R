@@ -117,28 +117,22 @@ function(m,d,factors=TRUE)
             w <- gsub('^\\s*','',w,perl=TRUE)
             w <- gsub('\\s*$','',w,perl=TRUE)
             # Create factor
-            # Ignore warnings of NAs produced by coercion as this
-            # is typically user entry error
             if (factors==TRUE)
             {
-               suppressWarnings(
-               d <- factor(as.integer(d),
-                           levels=as.integer(w[seq(1,length(w),2)]),
+               d <- factor(d,
+                           levels=w[seq(1,length(w),2)],
                            labels=w[seq(2,length(w),2)])
-               )
-               attr(d,'redcapLevels') <- as.integer(w[seq(1,length(w),2)])
+               attr(d,'redcapLevels') <- w[seq(1,length(w),2)]
             }
             else
             {
-               suppressWarnings(d <- as.integer(d))
                attr(d,'redcapLabels') <- w[seq(2,length(w),2)]
-               attr(d,'redcapLevels') <- as.integer(w[seq(1,length(w),2)])
+               attr(d,'redcapLevels') <- w[seq(1,length(w),2)]
             }
          } 
          else if (length(w) == length(grep('^[0-9.]+$',w,perl=TRUE))) 
          {
-            # Create integer since the meta data about choices are bungled.
-            suppressWarnings(d <- as.integer(d))
+            # Leave as-is since the meta data about choices are bungled.
          } 
       }
    }
